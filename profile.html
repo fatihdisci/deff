@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profil - Defend 100</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+</head>
+<body class="bg-[#0a0c12] text-white font-['Inter'] min-h-screen flex flex-col">
+
+    <main class="flex-1 overflow-y-auto px-6 pb-32 space-y-8 max-w-md mx-auto w-full pt-10">
+        <div class="flex items-center gap-6">
+            <div class="w-20 h-20 rounded-full bg-gradient-to-tr from-[#135bec] to-emerald-500 p-1">
+                <div class="w-full h-full rounded-full bg-[#0a0c12] flex items-center justify-center text-3xl">👤</div>
+            </div>
+            <div>
+                <h2 class="text-2xl font-bold">Fatih</h2>
+                <p class="text-slate-500">7 Günlük Seri 🔥</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white/5 border border-white/10 p-4 rounded-2xl">
+                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Ortalama Skor</p>
+                <p class="text-3xl font-black text-[#135bec]">84</p>
+            </div>
+            <div class="bg-white/5 border border-white/10 p-4 rounded-2xl">
+                <p class="text-[10px] text-slate-500 uppercase font-bold tracking-widest">Kalkanlar</p>
+                <p class="text-3xl font-black text-emerald-400">2</p>
+            </div>
+        </div>
+
+        <section class="space-y-4">
+            <h3 class="text-xs font-bold uppercase text-slate-500 tracking-widest">Son 7 Gün</h3>
+            <div class="flex justify-between items-end h-32 gap-2 px-2">
+                <div class="bg-slate-800 w-full rounded-t-lg h-[60%]"></div>
+                <div class="bg-[#135bec] w-full rounded-t-lg h-[90%]"></div>
+                <div class="bg-[#135bec] w-full rounded-t-lg h-[85%]"></div>
+                <div class="bg-red-500/50 w-full rounded-t-lg h-[40%]"></div>
+                <div class="bg-[#135bec] w-full rounded-t-lg h-[95%]"></div>
+                <div class="bg-[#135bec] w-full rounded-t-lg h-[80%]"></div>
+                <div class="bg-[#135bec] w-full rounded-t-lg h-[100%]"></div>
+            </div>
+        </section>
+
+        <a href="settings.html" class="flex items-center justify-between bg-white/5 p-5 rounded-2xl border border-white/10">
+            <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-slate-400">settings</span>
+                <span class="font-medium">Uygulama Ayarları</span>
+            </div>
+            <span class="material-symbols-outlined text-slate-500">chevron_right</span>
+        </a>
+    </main>
+
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#0a0c12]/90 backdrop-blur-xl border-t border-white/10">
+        <div class="max-w-md mx-auto flex justify-around items-center px-4 h-20">
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="dashboard.html">
+                <span class="material-symbols-outlined text-[28px]">shield</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest">Defense</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="dailyaudit.html">
+                <span class="material-symbols-outlined text-[28px]">history</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest">History</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="goalssetup.html">
+                <span class="material-symbols-outlined text-[28px]">target</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest">Arsenal</span>
+            </a>
+            <a class="flex flex-col items-center gap-1 text-[#135bec]" href="profile.html">
+                <span class="material-symbols-outlined text-[28px] fill-[1]">person</span>
+                <span class="text-[10px] font-semibold uppercase tracking-widest">Profile</span>
+            </a>
+        </div>
+    </nav>
+</body>
+</html>

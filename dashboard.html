@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Defend 100 - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#135bec",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#0a0c12",
+                        "glass": "rgba(255, 255, 255, 0.03)",
+                        "glass-border": "rgba(255, 255, 255, 0.1)",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .score-ring {
+            filter: drop-shadow(0 0 15px rgba(19, 91, 236, 0.4));
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display">
+<!-- Header / Nav -->
+<header class="flex items-center justify-between p-6 sticky top-0 z-50 bg-background-dark/80 backdrop-blur-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">shield_with_heart</span>
+<h1 class="text-xl font-bold tracking-tight">DEFEND 100</h1>
+</div>
+<button class="relative p-2 rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 flex h-2 w-2 rounded-full bg-red-500"></span>
+</button>
+</header>
+<main class="flex-1 overflow-y-auto px-6 pb-24 space-y-8 max-w-md mx-auto w-full">
+<!-- Central Progress Section -->
+<section class="flex flex-col items-center justify-center py-6 text-center space-y-4">
+<div class="relative flex items-center justify-center w-64 h-64">
+<!-- SVG Progress Ring -->
+<svg class="w-full h-full transform -rotate-90 score-ring">
+<circle class="text-slate-800" cx="50%" cy="50%" fill="transparent" r="110" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary" cx="50%" cy="50%" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="0" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-7xl font-extrabold tracking-tighter text-white">100</span>
+<span class="text-xs font-semibold uppercase tracking-[0.2em] text-primary/80">Integrity Score</span>
+</div>
+</div>
+<div class="space-y-2">
+<h2 class="text-lg font-medium text-slate-300">Daily Integrity Score</h2>
+<p class="text-sm text-slate-500 italic max-w-[280px] leading-relaxed">
+                    "Zaten mükemmelsin. Sadece onu kaybetmemeye çalış."
+                </p>
+</div>
+</section>
+<!-- Vertical Metrics List -->
+<section class="space-y-4">
+<h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 px-1">Defense Metrics</h3>
+<!-- Metric 1: Water -->
+<div class="glass-card rounded-2xl p-4 flex items-center justify-between transition-all hover:bg-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-400">
+<span class="material-symbols-outlined">water_drop</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Hydration</p>
+<p class="text-base font-bold">1500 <span class="text-slate-500 font-normal">/ 2500ml</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded">-4 pts</span>
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Metric 2: Steps -->
+<div class="glass-card rounded-2xl p-4 flex items-center justify-between transition-all hover:bg-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+<span class="material-symbols-outlined">footprint</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Activity</p>
+<p class="text-base font-bold">4200 <span class="text-slate-500 font-normal">/ 10000</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded">-6 pts</span>
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Metric 3: Sleep -->
+<div class="glass-card rounded-2xl p-4 flex items-center justify-between transition-all hover:bg-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400">
+<span class="material-symbols-outlined">bedtime</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Recovery</p>
+<p class="text-base font-bold">7.5 <span class="text-slate-500 font-normal">/ 8 hrs</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Metric 4: Tasks -->
+<div class="glass-card rounded-2xl p-4 flex items-center justify-between transition-all hover:bg-white/5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Tasks</p>
+<p class="text-base font-bold">2 <span class="text-slate-500 font-normal">/ 5 items</span></p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded">-3 pts</span>
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Metric 5: Screen Time -->
+<div class="glass-card rounded-2xl p-4 flex flex-col gap-3 transition-all hover:bg-white/5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
+<span class="material-symbols-outlined">phone_android</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Screen Time</p>
+<p class="text-base font-bold text-amber-500">120 / 90 min</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold text-amber-500 uppercase tracking-tight">Over-limit</span>
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Warning Bar -->
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-amber-500" style="width: 100%"></div>
+</div>
+</div>
+<!-- Metric 6: Calories -->
+<div class="glass-card rounded-2xl p-4 flex flex-col gap-3 transition-all hover:bg-white/5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-rose-500/10 flex items-center justify-center text-rose-400">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<div>
+<p class="text-xs font-medium text-slate-500">Calories</p>
+<p class="text-base font-bold text-red-400">2100 / 2000 kcal</p>
+</div>
+</div>
+<div class="flex flex-col items-end gap-1">
+<span class="text-[10px] font-bold text-red-400 uppercase tracking-tight">Over-limit</span>
+<button class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-sm">add</span>
+</button>
+</div>
+</div>
+<!-- Warning Bar -->
+<div class="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-red-400" style="width: 100%"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-background-dark/90 backdrop-blur-xl border-t border-glass-border">
+    <div class="max-w-md mx-auto flex justify-around items-center px-4 h-20">
+        <a class="flex flex-col items-center gap-1 text-primary" href="dashboard.html">
+            <span class="material-symbols-outlined text-[28px] fill-[1]">shield</span>
+            <span class="text-[10px] font-semibold uppercase tracking-widest">Defense</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="dailyaudit.html">
+            <span class="material-symbols-outlined text-[28px]">history</span>
+            <span class="text-[10px] font-semibold uppercase tracking-widest">History</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="goalssetup.html">
+            <span class="material-symbols-outlined text-[28px]">target</span>
+            <span class="text-[10px] font-semibold uppercase tracking-widest">Arsenal</span>
+        </a>
+        <a class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-300" href="profile.html">
+            <span class="material-symbols-outlined text-[28px]">person</span>
+            <span class="text-[10px] font-semibold uppercase tracking-widest">Profile</span>
+        </a>
+    </div>
+</nav>
+</body></html>
