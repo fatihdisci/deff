@@ -2,35 +2,102 @@
 
 import { useState, useEffect, useCallback } from "react"
 import type { Goals, GoalKey } from "./use-goals"
+import { createClient } from "@/lib/supabase/client"
 
 type ProgressData = Partial<Record<GoalKey, number>>
 type AllProgress = Record<string, ProgressData>
-
-const STORAGE_KEY = "defend100_progress"
 
 function getTodayKey(): string {
     return new Date().toISOString().split("T")[0]
 }
 
 export function useProgress(goals: Goals) {
+    const supabase = createClient()
     const [dateKey, setDateKey] = useState(getTodayKey)
     const [progress, setProgress] = useState<ProgressData>({})
+    const [allProgress, setAllProgress] = useState<AllProgress>({})
+    const [userId, setUserId] = useState<string | null>(null)
 
-    // Load from localStorage
+    // Load from Supabase on mount
     useEffect(() => {
-        const all: AllProgress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
-        setProgress(all[dateKey] || {})
-    }, [dateKey])
+        let mounted = true
 
+        async function fetchProgress() {
+            try {
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) return
+
+                if (mounted) setUserId(user.id)
+
+                const { data, error } = await supabase
+                    .from("progress")
+                    .select("*")
+                    .eq("user_id", user.id)
+
+                if (error) throw error
+
+                if (data && mounted) {
+                    const fetchedProgress: AllProgress = {}
+                    data.forEach((row) => {
+                        const date = row.date // e.g. "2026-02-20"
+                        const key = row.metric_key as GoalKey
+                        if (!fetchedProgress[date]) {
+                            fetchedProgress[date] = {}
+                        }
+                        fetchedProgress[date][key] = parseFloat(row.value)
+                    })
+                    setAllProgress(fetchedProgress)
+                }
+            } catch (err) {
+                console.error("Error fetching progress from Supabase:", err)
+            }
+        }
+
+        fetchProgress()
+
+        return () => {
+            mounted = false
+        }
+    }, [supabase])
+
+    // Update current date progress view securely when date or allProgress changes
+    useEffect(() => {
+        setProgress(allProgress[dateKey] || {})
+    }, [dateKey, allProgress])
+
+    // Save with Optimistic UI updates
     const saveValue = useCallback(
-        (key: GoalKey, value: number) => {
-            const all: AllProgress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
-            if (!all[dateKey]) all[dateKey] = {}
-            all[dateKey][key] = value
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
-            setProgress((prev) => ({ ...prev, [key]: value }))
+        async (key: GoalKey, value: number) => {
+            if (!userId) return
+
+            // Optimistic Update UI
+            setAllProgress((prevAll) => {
+                const updatedAll = { ...prevAll }
+                if (!updatedAll[dateKey]) updatedAll[dateKey] = {}
+                updatedAll[dateKey] = { ...updatedAll[dateKey], [key]: value }
+                return updatedAll
+            })
+
+            try {
+                const { error } = await supabase
+                    .from("progress")
+                    .upsert(
+                        {
+                            user_id: userId,
+                            date: dateKey,
+                            metric_key: key,
+                            value: value,
+                        },
+                        {
+                            onConflict: "user_id, date, metric_key"
+                        }
+                    )
+                if (error) throw error
+            } catch (err) {
+                console.error("Error saving progress to Supabase:", err)
+            }
         },
-        [dateKey]
+        [supabase, dateKey, userId]
     )
 
     /**
@@ -88,17 +155,41 @@ export function useProgress(goals: Goals) {
 
     const calculateScore = useCallback(() => computeDailyScore(progress), [computeDailyScore, progress])
 
-    // Calculate history for all dates
+    // Calculate history for all dates based on allProgress state
     const [history, setHistory] = useState<Record<string, number>>({})
 
     useEffect(() => {
-        const all: AllProgress = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}")
+        let mounted = true
+
         const newHistory: Record<string, number> = {}
-        for (const [date, data] of Object.entries(all)) {
-            newHistory[date] = computeDailyScore(data)
+        let newXpTotal = 0
+
+        for (const [date, data] of Object.entries(allProgress)) {
+            const score = computeDailyScore(data)
+            newHistory[date] = score
+            newXpTotal += score
         }
-        setHistory(newHistory)
-    }, [goals, computeDailyScore, progress]) // Recalculate when goals or current progress changes
+
+        if (mounted) {
+            setHistory(newHistory)
+
+            // Update user XP in Supabase if logged in
+            if (userId) {
+                // We use fire-and-forget here to keep UI fast
+                supabase
+                    .from("profiles")
+                    .update({ xp: newXpTotal })
+                    .eq("id", userId)
+                    .then(({ error }) => {
+                        if (error) console.error("Error updating XP in profiles:", error)
+                    })
+            }
+        }
+
+        return () => {
+            mounted = false
+        }
+    }, [goals, computeDailyScore, allProgress, userId, supabase]) // Recalculate when goals, allProgress, or userId changes
 
     return { progress, saveValue, calculateScore, dateKey, history, setDateKey }
 }

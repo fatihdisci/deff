@@ -201,8 +201,9 @@ export default function ArsenalPage() {
         []
     )
 
-    const handleSave = () => {
-        if (saveGoals(syncedDraft)) {
+    const handleSave = async () => {
+        const success = await saveGoals(syncedDraft)
+        if (success) {
             setSaved(true)
             setTimeout(() => setSaved(false), 2000)
         }

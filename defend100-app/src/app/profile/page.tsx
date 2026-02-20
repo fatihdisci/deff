@@ -8,11 +8,14 @@ import { PageTransition } from "@/components/page-transition"
 import { AvatarPicker } from "@/components/ui/avatar-picker"
 import { useGoals } from "@/hooks/use-goals"
 import { useProgress } from "@/hooks/use-progress"
+import { useProfile } from "@/hooks/use-profile"
+import { calculateLevelAndRank } from "@/lib/gamification"
 import { cn } from "@/lib/utils"
 
 export default function ProfilePage() {
     const { goals } = useGoals()
     const { history } = useProgress(goals)
+    const { profile, loading } = useProfile()
 
     // Calculate stats from real history
     const stats = useMemo(() => {
@@ -68,6 +71,18 @@ export default function ProfilePage() {
         return days
     }, [history])
 
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+            </div>
+        )
+    }
+
+    const { rank, level, currentXp, nextLevelXp, progressPct } = profile
+        ? calculateLevelAndRank(profile.xp)
+        : { rank: "Acemi Savunmacı", level: 1, currentXp: 0, nextLevelXp: 500, progressPct: 0 }
+
     return (
         <div className="flex min-h-screen flex-col">
             <PageTransition>
@@ -75,11 +90,15 @@ export default function ProfilePage() {
                     {/* Avatar Picker */}
                     <div className="flex flex-col items-center gap-4">
                         <AvatarPicker />
-                        <div className="text-center">
-                            <h2 className="text-3xl font-black tracking-tight text-foreground">Fatih</h2>
-                            <p className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2">
+
+                        <div className="text-center w-full">
+                            <h2 className="text-3xl font-black tracking-tight text-foreground">
+                                {profile?.displayName || "Savunucu"}
+                            </h2>
+                            <p className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 mt-1">
                                 <Trophy className="w-4 h-4 text-amber-500" />
-                                Seviye {Math.floor(stats.totalDays / 7) + 1} Savunucu
+                                <span className="font-bold text-amber-500">Lv. {level}</span>
+                                <span>{rank}</span>
                                 {stats.currentStreak >= 3 && (
                                     <span className="bg-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
                                         <Flame className="w-3 h-3 fill-current" />
@@ -87,6 +106,30 @@ export default function ProfilePage() {
                                     </span>
                                 )}
                             </p>
+
+                            {/* Gamification Progress Bar */}
+                            <div className="mt-5 w-full glass-card rounded-2xl p-4 relative overflow-hidden group">
+                                <div className="absolute top-0 left-0 p-3 opacity-10 group-hover:scale-110 transition-transform">
+                                    <Trophy className="w-16 h-16" />
+                                </div>
+                                <div className="relative z-10 space-y-2">
+                                    <div className="flex items-end justify-between text-xs font-bold w-full uppercase tracking-wider text-muted-foreground">
+                                        <span className="text-primary">{currentXp.toLocaleString()} XP</span>
+                                        <span className="text-muted-foreground/50">{nextLevelXp.toLocaleString()} XP</span>
+                                    </div>
+                                    <div className="h-3 w-full bg-muted/30 rounded-full overflow-hidden flex">
+                                        <div
+                                            className="h-full bg-gradient-to-r from-primary to-amber-500 rounded-full transition-all duration-1000 ease-out"
+                                            style={{ width: `${progressPct}%` }}
+                                        />
+                                    </div>
+                                    <div className="text-center">
+                                        <span className="text-[10px] font-medium text-muted-foreground/70 uppercase">
+                                            Sonraki Seviyeye {(nextLevelXp - currentXp).toLocaleString()} XP Kaldı
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

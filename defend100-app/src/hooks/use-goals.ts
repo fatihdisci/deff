@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
+import { createClient } from "@/lib/supabase/client"
 
 export interface GoalConfig {
     weight: number
@@ -14,8 +15,6 @@ export type GoalKey = "hydration" | "activity" | "recovery" | "tasks" | "screen_
 
 export type Goals = Record<GoalKey, GoalConfig>
 
-const STORAGE_KEY = "defend100_goals"
-
 const DEFAULTS: Goals = {
     hydration: { weight: 2, target: 2500, unit: "ml", isActive: true },
     activity: { weight: 3, target: 10000, unit: "adım", isActive: true },
@@ -26,35 +25,89 @@ const DEFAULTS: Goals = {
 }
 
 export function useGoals() {
+    const supabase = createClient()
     const [goals, setGoals] = useState<Goals>(DEFAULTS)
+    const [userId, setUserId] = useState<string | null>(null)
 
+    // 1. Fetch user session and goals on mount
     useEffect(() => {
-        const stored = localStorage.getItem(STORAGE_KEY)
-        if (stored) {
+        let mounted = true
+
+        async function fetchGoals() {
             try {
-                const parsed = JSON.parse(stored)
-                const merged = { ...DEFAULTS }
-                for (const key in merged) {
-                    if (parsed[key]) {
-                        merged[key as GoalKey] = { ...merged[key as GoalKey], ...parsed[key] }
-                    }
+                const { data: { user } } = await supabase.auth.getUser()
+                if (!user) return
+
+                if (mounted) setUserId(user.id)
+
+                const { data, error } = await supabase
+                    .from("goals")
+                    .select("*")
+                    .eq("user_id", user.id)
+
+                if (error) throw error
+
+                if (data && data.length > 0 && mounted) {
+                    const merged = { ...DEFAULTS }
+                    data.forEach((row) => {
+                        const key = row.metric_key as GoalKey
+                        if (merged[key]) {
+                            merged[key] = {
+                                weight: row.weight,
+                                target: row.target ? parseFloat(row.target) : undefined,
+                                limit: row.limit ? parseFloat(row.limit) : undefined,
+                                unit: row.unit,
+                                isActive: row.is_active,
+                            }
+                        }
+                    })
+                    setGoals(merged)
                 }
-                setGoals(merged)
-            } catch {
-                setGoals(DEFAULTS)
+            } catch (err) {
+                console.error("Error fetching goals from Supabase:", err)
             }
         }
-    }, [])
 
-    const saveGoals = useCallback((newGoals: Goals) => {
-        try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(newGoals))
-            setGoals(newGoals)
-            return true
-        } catch {
-            return false
+        fetchGoals()
+
+        return () => {
+            mounted = false
         }
-    }, [])
+    }, [supabase])
+
+    // 2. Save goals with Optimistic UI updates
+    const saveGoals = useCallback(
+        async (newGoals: Goals) => {
+            if (!userId) return false
+
+            // Optimistic UI update
+            setGoals(newGoals)
+
+            try {
+                // Prepare flat records for upsert
+                const records = Object.entries(newGoals).map(([key, config]) => ({
+                    user_id: userId,
+                    metric_key: key,
+                    weight: config.weight,
+                    target: config.target ?? null,
+                    limit: config.limit ?? null,
+                    unit: config.unit,
+                    is_active: config.isActive,
+                }))
+
+                const { error } = await supabase
+                    .from("goals")
+                    .upsert(records, { onConflict: "user_id, metric_key" })
+
+                if (error) throw error
+                return true
+            } catch (err) {
+                console.error("Error saving goals to Supabase:", err)
+                return false
+            }
+        },
+        [supabase, userId]
+    )
 
     const getTargetValue = useCallback((key: GoalKey): number => {
         const goal = goals[key]

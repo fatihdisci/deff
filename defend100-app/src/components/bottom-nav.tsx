@@ -27,6 +27,11 @@ const navItems: NavItem[] = [
 export function BottomNav() {
     const pathname = usePathname()
 
+    // Hide BottomNav on auth and onboarding routes
+    if (pathname === '/login' || pathname.startsWith('/onboarding')) {
+        return null
+    }
+
     return (
         <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-background/80 backdrop-blur-xl">
             <div className="mx-auto flex max-w-md items-center justify-around px-2 h-20">
