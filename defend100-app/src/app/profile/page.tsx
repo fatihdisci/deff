@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { motion } from "framer-motion"
 import { Settings, ChevronRight, Trophy, Flame, Shield, Activity, Calendar as CalendarIcon } from "lucide-react"
 import Link from "next/link"
@@ -10,12 +10,15 @@ import { useGoals } from "@/hooks/use-goals"
 import { useProgress } from "@/hooks/use-progress"
 import { useProfile } from "@/hooks/use-profile"
 import { calculateLevelAndRank } from "@/lib/gamification"
+import { UsernameSetup } from "@/components/username-setup"
+import { avatars } from "@/components/ui/avatar-picker"
 import { cn } from "@/lib/utils"
 
 export default function ProfilePage() {
     const { goals } = useGoals()
     const { history } = useProgress(goals)
-    const { profile, loading } = useProfile()
+    const { profile, loading, updateProfile, checkUsernameAvailability } = useProfile()
+    const [showPicker, setShowPicker] = useState(false)
 
     // Calculate stats from real history
     const stats = useMemo(() => {
@@ -83,19 +86,62 @@ export default function ProfilePage() {
         ? calculateLevelAndRank(profile.xp)
         : { rank: "Acemi Savunmacı", level: 1, currentXp: 0, nextLevelXp: 500, progressPct: 0 }
 
+    if (profile && !profile.username) {
+        return (
+            <UsernameSetup
+                profile={profile}
+                updateProfile={updateProfile}
+                checkUsernameAvailability={checkUsernameAvailability}
+            />
+        )
+    }
+
+    const currentAvatar = avatars.find(a => a.id.toString() === (profile?.avatarId || localStorage.getItem("zenith_avatar_id") || "1")) || avatars[0]
+
     return (
         <div className="flex min-h-screen flex-col">
             <PageTransition>
                 <main className="flex-1 space-y-8 overflow-y-auto px-6 pb-32 pt-10 max-w-md mx-auto w-full">
-                    {/* Avatar Picker */}
+                    {/* Avatar Picker / Display */}
                     <div className="flex flex-col items-center gap-4">
-                        <AvatarPicker />
+                        {showPicker ? (
+                            <div className="w-full relative flex flex-col items-center bg-card/50 p-6 rounded-3xl border border-border">
+                                <AvatarPicker />
+                                <button
+                                    onClick={() => {
+                                        setShowPicker(false)
+                                        // Update profile if avatar changed
+                                        const newAvatarId = localStorage.getItem("zenith_avatar_id") || profile?.avatarId
+                                        if (newAvatarId !== profile?.avatarId) {
+                                            updateProfile({ avatarId: newAvatarId })
+                                        }
+                                    }}
+                                    className="mt-6 px-6 py-2 bg-primary text-primary-foreground font-bold rounded-xl text-sm tap-highlight-transparent hover:bg-primary/90 transition-colors"
+                                >
+                                    Kaydet ve Kapat
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="flex flex-col items-center gap-3">
+                                <div className="relative w-32 h-32 rounded-full overflow-hidden border-4 border-background bg-slate-900 flex items-center justify-center shadow-xl group cursor-pointer" onClick={() => setShowPicker(true)}>
+                                    <div className="w-full h-full flex items-center justify-center scale-[2.5]">
+                                        {currentAvatar.svg}
+                                    </div>
+                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                        <span className="text-xs font-bold text-white uppercase tracking-wider">Düzenle</span>
+                                    </div>
+                                </div>
+                                <button onClick={() => setShowPicker(true)} className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-primary transition-colors">
+                                    Karakteri Değiştir
+                                </button>
+                            </div>
+                        )}
 
-                        <div className="text-center w-full">
-                            <h2 className="text-3xl font-black tracking-tight text-foreground">
-                                {profile?.displayName || "Savunucu"}
+                        <div className="text-center w-full mt-2">
+                            <h2 className="text-3xl font-black tracking-tight text-foreground uppercase">
+                                @{profile?.username || "Savunucu"}
                             </h2>
-                            <p className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 mt-1">
+                            <p className="text-sm font-medium text-muted-foreground flex items-center justify-center gap-2 mt-2">
                                 <Trophy className="w-4 h-4 text-amber-500" />
                                 <span className="font-bold text-amber-500">Lv. {level}</span>
                                 <span>{rank}</span>

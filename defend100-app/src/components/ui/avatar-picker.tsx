@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-interface Avatar {
+export interface Avatar {
     id: number;
     svg: React.ReactNode;
     alt: string;
@@ -12,7 +12,7 @@ interface Avatar {
 }
 
 // Zenith Temasına uygun 6 Minimalist Avatar
-const avatars: Avatar[] = [
+export const avatars: Avatar[] = [
     {
         id: 1,
         alt: "The Guardian",
@@ -156,8 +156,7 @@ export function AvatarPicker() {
                     </motion.div>
 
                     <motion.div className="text-center mt-4" variants={pickerVariants.item}>
-                        <motion.h2 className="text-2xl font-bold">{selectedAvatar.alt}</motion.h2>
-                        <motion.p className="text-muted-foreground text-sm mt-1">Savunmacını Seç</motion.p>
+                        <motion.p className="text-muted-foreground text-sm mt-1">Görünümünü Seç</motion.p>
                     </motion.div>
 
                     {/* Avatar Seçici (6'lı Grid/Wrap) */}

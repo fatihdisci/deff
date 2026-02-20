@@ -9,8 +9,10 @@ import { LogoIcon } from "@/components/icons"
 import { useGoals, type GoalKey } from "@/hooks/use-goals"
 import { useProgress } from "@/hooks/use-progress"
 import { useNotifications } from "@/hooks/use-notifications"
+import { useProfile } from "@/hooks/use-profile"
 import { NotificationPanel } from "@/components/notification-panel"
 import { TierCelebration, getTier } from "@/components/tier-celebration"
+import { UsernameSetup } from "@/components/username-setup"
 import { cn } from "@/lib/utils"
 
 /* ── Metric card metadata ── */
@@ -135,7 +137,8 @@ function MetricCard({
   return (
     <div
       className={cn(
-        "glass-card rounded-2xl p-4",
+        "glass-card rounded-2xl p-4 transition-all duration-500",
+        !hasData && "opacity-50 grayscale select-none",
         isOver && "ring-1 ring-destructive/30"
       )}
     >
@@ -191,6 +194,7 @@ function MetricCard({
 
 /* ── Dashboard Page ── */
 export default function DashboardPage() {
+  const { profile, loading: profileLoading, updateProfile, checkUsernameAvailability } = useProfile()
   const { goals, activeGoals } = useGoals()
   const { progress, saveValue, calculateScore } = useProgress(goals)
   const score = calculateScore()
@@ -259,6 +263,24 @@ export default function DashboardPage() {
 
   const isLessIsBetter = (key: GoalKey) =>
     key === "screen_time" || key === "calories"
+
+  if (profileLoading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+      </div>
+    )
+  }
+
+  if (profile && !profile.username) {
+    return (
+      <UsernameSetup
+        profile={profile}
+        updateProfile={updateProfile}
+        checkUsernameAvailability={checkUsernameAvailability}
+      />
+    )
+  }
 
   return (
     <div className="flex min-h-screen flex-col">

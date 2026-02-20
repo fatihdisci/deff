@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client"
 export interface UserProfile {
     id: string
     email?: string | null
+    username?: string | null
     displayName: string
     avatarId: string
     level: number
@@ -44,6 +45,7 @@ export function useProfile() {
                     setProfile({
                         id: data.id,
                         email: data.email,
+                        username: data.username,
                         displayName: data.display_name || "Savunucu",
                         avatarId: data.avatar_id || "shield",
                         level: data.level || 1,
@@ -77,6 +79,7 @@ export function useProfile() {
             const { error } = await supabase
                 .from("profiles")
                 .update({
+                    username: updatedProfile.username,
                     display_name: updatedProfile.displayName,
                     avatar_id: updatedProfile.avatarId,
                     level: updatedProfile.level,
@@ -93,5 +96,21 @@ export function useProfile() {
         }
     }
 
-    return { profile, loading, updateProfile }
+    const checkUsernameAvailability = async (username: string): Promise<boolean> => {
+        try {
+            const { data, error } = await supabase
+                .from("profiles")
+                .select("id")
+                .eq("username", username)
+                .maybeSingle()
+
+            if (error) throw error
+            return data === null // If null, username is available
+        } catch (err) {
+            console.error("Error checking username:", err)
+            return false // Assume unavailable on error
+        }
+    }
+
+    return { profile, loading, updateProfile, checkUsernameAvailability }
 }
