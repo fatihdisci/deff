@@ -19,7 +19,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Zenith",
   description: "Zaten mükemmelsin. Sadece onu kaybetmemeye çalış.",
-  manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",

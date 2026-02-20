@@ -60,8 +60,8 @@ export function UsernameSetup({ profile, updateProfile, checkUsernameAvailabilit
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-6 bg-background relative overflow-hidden">
-            <div className="absolute inset-0 -z-10">
+        <div className="flex min-h-[100dvh] flex-col items-center p-4 sm:p-6 bg-background relative overflow-y-auto overflow-x-hidden">
+            <div className="fixed inset-0 -z-10 pointer-events-none">
                 <div className="absolute top-20 -left-20 h-64 w-64 rounded-full bg-primary/10 blur-3xl" />
                 <div className="absolute bottom-20 -right-20 h-80 w-80 rounded-full bg-primary/5 blur-3xl" />
             </div>
@@ -69,12 +69,12 @@ export function UsernameSetup({ profile, updateProfile, checkUsernameAvailabilit
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="w-full max-w-sm space-y-8 glass-card p-8 rounded-3xl border border-border"
+                className="w-full max-w-sm space-y-6 glass-card p-6 sm:p-8 rounded-3xl border border-border my-auto"
             >
                 <div className="text-center space-y-2">
                     <h1 className="text-2xl font-black tracking-tight">Karakterini Yarat</h1>
                     <p className="text-sm text-muted-foreground">
-                        Seni Zenith dünyasında temsil edecek avatarını ve eşsiz kullanıcı adını belirle.
+                        Seni Zenith dünyasında temsil edecek avatarını ve kullanıcı adını belirle.
                     </p>
                 </div>
 
