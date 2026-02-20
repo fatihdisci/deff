@@ -1,26 +1,25 @@
-# Project Task Management
+# Proje Görev Yönetimi
 
-## Current Task: [Görevin Adı]
+## Mevcut Görev: Dinamik Puanlama ve UI İyileştirmesi
 
-### 1. Plan First
-- [ ] Görev spesifikasyonlarını netleştir.
-- [ ] Uygulama adımlarını listele (3+ adım ise plan moduna geç).
-- [ ] Etkilenecek dosyaları belirle.
+### 1. Önce Planla
+- [x] Puan hesaplama formülünü (Bütünlük Puanı: 100 Başla, Hata Yaparsan Düş) revize et.
+- [x] "Sadece girilen veriler hesaplamaya katılsın" mantığını kurgula.
+- [x] UI: Prompt yerine Inline Input tasarımına geçiş yap.
+- [x] UI: Hedefleri Aktif/Pasif yapabilme özelliği ekle.
 
-### 2. Verify Plan
-- [ ] Planı kullanıcıya doğrulat.
-- [ ] Mimarinin "Elegance" prensibine uygunluğunu kontrol et.
+### 2. Uygulama Süreci
+- [x] `goals-manager.js`: `isActive` özelliği eklendi.
+- [x] `progress-manager.js`: Yeni puanlama algoritması (100 Start, Dynamic Weighting) kodlandı.
+- [x] `goalssetup.html`: Checkbox'lar eklendi ve kaydetme mantığı güncellendi.
+- [x] `dashboard.html`: İnline input ve pasif kart gizleme özelliği eklendi.
 
-### 3. Implementation Track
-- [ ] Adım 1: ...
-- [ ] Adım 2: ...
+### 3. Doğrulama & İnceleme
+- [ ] "Veri girilmedikçe puan 100 kalmalı" kuralını test et (Manuel).
+- [ ] "Ekran Süresi limiti aşılınca puan düşmeli" kuralını test et (Manuel).
+- [ ] Pasif yapılan hedeflerin dashboard'da gizlendiğini doğrula (Manuel).
 
-### 4. Verification & Review
-- [ ] Testler çalıştırıldı mı?
-- [ ] Diff kontrolü yapıldı mı?
-- [ ] Loglar temiz mi?
-
-## Document Results
+## Sonuçları Belgele
 *Bu bölüm her görev sonunda güncellenmelidir.*
-- **Summary**: Yapılan değişikliğin yüksek seviyeli özeti.
-- **Impact**: Değişikliğin etkilediği alanlar.
+- **Özet**: Dinamik puanlama motoru ve gelişmiş UI etkileşimleri tamamlandı. Kullanıcı artık hedeflerini yönetebilir, satır içi veri girebilir ve anlık "Integrity Score" değişimini izleyebilir.
+- **Etkilenenler**: `goals-manager.js`, `progress-manager.js`, `goalssetup.html`, `dashboard.html`

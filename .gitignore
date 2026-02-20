@@ -1,0 +1,38 @@
+# dependencies
+defend100-app/node_modules
+defend100-app/.pnp
+defend100-app/.pnp.*
+defend100-app/.yarn/*
+!defend100-app/.yarn/patches
+!defend100-app/.yarn/plugins
+!defend100-app/.yarn/releases
+!defend100-app/.yarn/versions
+
+# testing
+defend100-app/coverage
+
+# next.js
+defend100-app/.next/
+defend100-app/out/
+
+# production
+defend100-app/build
+
+# misc
+.DS_Store
+*.pem
+*.log
+
+# env files
+.env*
+defend100-app/.env*
+
+# vercel
+defend100-app/.vercel
+
+# typescript
+defend100-app/*.tsbuildinfo
+defend100-app/next-env.d.ts
+
+# VS Code
+.vscode/
