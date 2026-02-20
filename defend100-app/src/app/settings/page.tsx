@@ -45,8 +45,8 @@ export default function SettingsPage() {
     }, [setTheme])
 
     const handleReset = useCallback(() => {
-        localStorage.removeItem("defend100_goals")
-        localStorage.removeItem("defend100_progress")
+        localStorage.removeItem("zenith_goals")
+        localStorage.removeItem("zenith_progress")
         setShowConfirm(false)
         window.location.reload()
     }, [])
@@ -122,7 +122,7 @@ export default function SettingsPage() {
                         )}
 
                         <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/50">
-                            Defend 100 v2.0.0 — React Build
+                            Zenith v2.0.0 — React Build
                         </p>
                     </div>
                 </main>

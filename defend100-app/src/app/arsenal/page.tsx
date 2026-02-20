@@ -32,9 +32,9 @@ const GOAL_CONFIGS: GoalCardConfig[] = [
 
 /* ── Weight Selector ── */
 const WEIGHT_OPTIONS = [
-    { value: 1, label: "Düşük", icon: "🛡️" },
-    { value: 2, label: "Orta", icon: "⚔️" },
-    { value: 3, label: "Yüksek", icon: "🔥" },
+    { value: 1, label: "Düşük", icon: "⭐" },
+    { value: 2, label: "Orta", icon: "⭐⭐" },
+    { value: 3, label: "Yüksek", icon: "⭐⭐⭐" },
 ]
 
 function WeightSelector({

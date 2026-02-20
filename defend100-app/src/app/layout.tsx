@@ -17,7 +17,7 @@ const poppins = Poppins({
 })
 
 export const metadata: Metadata = {
-  title: "Defend 100",
+  title: "Zenith",
   description: "Zaten mükemmelsin. Sadece onu kaybetmemeye çalış.",
 }
 
@@ -43,7 +43,7 @@ export default function RootLayout({
       >
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var t=localStorage.getItem("defend100_theme");var d=t==="light"?false:true;document.documentElement.classList.toggle("dark",d)}catch(e){document.documentElement.classList.add("dark")}})()`,
+            __html: `(function(){try{var t=localStorage.getItem("zenith_theme");var d=t==="light"?false:true;document.documentElement.classList.toggle("dark",d)}catch(e){document.documentElement.classList.add("dark")}})()`,
           }}
         />
         {children}

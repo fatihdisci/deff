@@ -190,10 +190,10 @@ export default function AuditPage() {
                         {/* Header */}
                         <div className="mb-8 border-b-2 border-dashed border-border pb-6 text-center">
                             <h2 className="mb-1 text-2xl font-black italic tracking-tighter">
-                                DEFEND 100
+                                ZENITH
                             </h2>
                             <p className="font-mono text-[10px] uppercase leading-tight tracking-widest text-muted-foreground">
-                                Terminal No: #D100-8842
+                                Terminal No: #ZNTH-8842
                                 <br />
                                 Doğrulama Kodu: 992-AXL-00
                             </p>

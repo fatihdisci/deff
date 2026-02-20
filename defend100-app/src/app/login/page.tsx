@@ -88,7 +88,7 @@ export default function LoginPage() {
                         <Shield className="h-10 w-10 text-primary" />
                     </motion.div>
                     <div>
-                        <h1 className="text-3xl font-black tracking-tight">Defend 100</h1>
+                        <h1 className="text-3xl font-black tracking-tight">Zenith</h1>
                         <p className="mt-1 text-sm text-muted-foreground">
                             Savunmanı başlat. Her gün 100 puanla uyan.
                         </p>
@@ -237,7 +237,7 @@ export default function LoginPage() {
 
                 {/* Footer */}
                 <p className="text-center font-mono text-[10px] uppercase tracking-widest text-muted-foreground/40">
-                    Defend 100 v2.1.0
+                    Zenith v2.1.0
                 </p>
             </motion.div>
         </div>

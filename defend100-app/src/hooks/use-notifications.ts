@@ -12,7 +12,7 @@ export interface Notification {
     type: NotificationType
 }
 
-const STORAGE_KEY = "defend100-notifications"
+const STORAGE_KEY = "zenith-notifications"
 
 export function useNotifications() {
     const [notifications, setNotifications] = useState<Notification[]>([])
@@ -31,7 +31,7 @@ export function useNotifications() {
             // Add a welcome notification if empty
             const welcome: Notification = {
                 id: crypto.randomUUID(),
-                title: "Defend 100'e Hoş Geldin",
+                title: "Zenith'e Hoş Geldin",
                 message: "Günlük hedeflerini takip etmeye başla ve serini oluştur!",
                 date: new Date().toISOString(),
                 read: false,

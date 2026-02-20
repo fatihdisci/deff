@@ -11,7 +11,7 @@ interface Avatar {
     theme: string;
 }
 
-// Defend 100 Temasına uygun 6 Minimalist Avatar
+// Zenith Temasına uygun 6 Minimalist Avatar
 const avatars: Avatar[] = [
     {
         id: 1,
@@ -114,7 +114,7 @@ export function AvatarPicker() {
     // Load from localStorage on mount
     useEffect(() => {
         setMounted(true);
-        const saved = localStorage.getItem("defend100_avatar_id");
+        const saved = localStorage.getItem("zenith_avatar_id");
         if (saved) {
             const found = avatars.find(a => a.id === parseInt(saved));
             if (found) setSelectedAvatar(found);
@@ -124,7 +124,7 @@ export function AvatarPicker() {
     const handleAvatarSelect = (avatar: Avatar) => {
         setRotationCount((prev) => prev + 1080);
         setSelectedAvatar(avatar);
-        localStorage.setItem("defend100_avatar_id", avatar.id.toString());
+        localStorage.setItem("zenith_avatar_id", avatar.id.toString());
     };
 
     if (!mounted) return null; // Hydration mismatch önlemi

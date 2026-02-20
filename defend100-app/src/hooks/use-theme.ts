@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 
-const STORAGE_KEY = "defend100_theme"
+const STORAGE_KEY = "zenith_theme"
 
 export function useTheme() {
     const [isDark, setIsDark] = useState(true)
